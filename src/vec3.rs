@@ -1,12 +1,15 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
-#[derive(Debug, PartialEq)]
-pub struct Vec3(f32, f32, f32);
+#[derive(Debug, PartialEq, Clone)]
+pub struct Vec3(pub f32, pub f32, pub f32);
 
-impl Default for Vec3 {
-    fn default() -> Self {
-        Vec3(0.0, 0.0, 0.0)
-    }
+pub type Color = Vec3;
+
+pub static VEC3_UNIT: Vec3 = Vec3(1.0, 1.0, 1.0);
+pub static VEC3_ZERO: Vec3 = Vec3(0.0, 0.0, 0.0);
+
+pub fn dot(lhs: &Vec3, rhs: &Vec3) -> f32 {
+    lhs.dot(rhs)
 }
 
 impl Vec3 {
@@ -38,11 +41,11 @@ impl Vec3 {
         self.2
     }
 
-    pub fn dot(&self, rhs: Self) -> f32 {
+    pub fn dot(&self, rhs: &Self) -> f32 {
         self.0 * rhs.0 + self.1 * rhs.1 + self.2 * rhs.2
     }
 
-    pub fn cross(&self, rhs: Self) -> Vec3 {
+    pub fn cross(&self, rhs: &Self) -> Vec3 {
         Vec3(
             self.1 * rhs.2 - self.2 * rhs.1,
             -(self.0 * rhs.2 - self.2 * rhs.0),
