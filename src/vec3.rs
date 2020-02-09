@@ -5,8 +5,22 @@ pub struct Vec3(pub f32, pub f32, pub f32);
 
 pub type Color = Vec3;
 
+#[allow(unused)]
 pub static VEC3_UNIT: Vec3 = Vec3(1.0, 1.0, 1.0);
+#[allow(unused)]
 pub static VEC3_ZERO: Vec3 = Vec3(0.0, 0.0, 0.0);
+#[allow(unused)]
+pub static VEC3_UP: Vec3 = Vec3(0.0, 1.0, 0.0);
+#[allow(unused)]
+pub static VEC3_DOWN: Vec3 = Vec3(0.0, -1.0, 0.0);
+#[allow(unused)]
+pub static VEC3_LEFT: Vec3 = Vec3(-1.0, 0.0, 0.0);
+#[allow(unused)]
+pub static VEC3_RIGHT: Vec3 = Vec3(1.0, 0.0, 0.0);
+#[allow(unused)]
+pub static VEC3_FORWARD: Vec3 = Vec3(0.0, 0.0, 1.0);
+#[allow(unused)]
+pub static VEC3_BACKWARD: Vec3 = Vec3(0.0, 0.0, -1.0);
 
 pub fn dot(lhs: &Vec3, rhs: &Vec3) -> f32 {
     lhs.dot(rhs)
@@ -64,6 +78,19 @@ impl Vec3 {
     pub fn normalize(&self) -> Vec3 {
         self / self.length()
     }
+
+    pub fn normalize_into(self) -> Vec3 {
+        let len = self.length();
+        self / len
+    }
+}
+
+impl Add for Vec3 {
+    type Output = Vec3;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        Vec3(self.0 + rhs.0, self.1 + rhs.1, self.2 + rhs.2)
+    }
 }
 
 impl Add for &Vec3 {
@@ -79,6 +106,14 @@ impl AddAssign<&Self> for Vec3 {
         self.0 += rhs.0;
         self.1 += rhs.1;
         self.2 += rhs.2;
+    }
+}
+
+impl Sub for Vec3 {
+    type Output = Vec3;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        Vec3(self.0 - rhs.0, self.1 - rhs.1, self.2 - rhs.2)
     }
 }
 
@@ -98,6 +133,14 @@ impl SubAssign<&Self> for Vec3 {
     }
 }
 
+impl Mul for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: Self) -> Self::Output {
+        Vec3(self.0 * rhs.0, self.1 * rhs.1, self.2 * rhs.2)
+    }
+}
+
 impl Mul for &Vec3 {
     type Output = Vec3;
 
@@ -111,6 +154,14 @@ impl MulAssign<&Self> for Vec3 {
         self.0 *= rhs.0;
         self.1 *= rhs.1;
         self.2 *= rhs.2;
+    }
+}
+
+impl Mul<f32> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        Vec3(self.0 * rhs, self.1 * rhs, self.2 * rhs)
     }
 }
 
@@ -130,6 +181,14 @@ impl MulAssign<f32> for Vec3 {
     }
 }
 
+impl Div for Vec3 {
+    type Output = Vec3;
+
+    fn div(self, rhs: Self) -> Self::Output {
+        Vec3(self.0 / rhs.0, self.1 / rhs.1, self.2 / rhs.2)
+    }
+}
+
 impl Div for &Vec3 {
     type Output = Vec3;
 
@@ -143,6 +202,14 @@ impl DivAssign<&Self> for Vec3 {
         self.0 /= rhs.0;
         self.1 /= rhs.1;
         self.2 /= rhs.2;
+    }
+}
+
+impl Div<f32> for Vec3 {
+    type Output = Vec3;
+
+    fn div(self, rhs: f32) -> Self::Output {
+        Vec3(self.0 / rhs, self.1 / rhs, self.2 / rhs)
     }
 }
 
