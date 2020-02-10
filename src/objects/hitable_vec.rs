@@ -1,8 +1,8 @@
-use crate::objects::hitable::{Hitable, HitRecord};
+use crate::objects::hitable::{HitRecord, Hitable};
 use crate::Ray;
 
 pub struct HitableVec {
-    vec: Vec<Box<dyn Hitable>>
+    vec: Vec<Box<dyn Hitable>>,
 }
 
 impl HitableVec {
