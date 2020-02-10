@@ -1,6 +1,6 @@
 use image::{ImageBuffer, Rgb};
 use rand::distributions::{Distribution, Uniform};
-use rust_raytracing_tutorial::{color_ray, Camera, Color, HitableVec, Sphere, Vec3};
+use rust_raytracing_tutorial::{color_ray, Camera, Color, HitableVec, Lambertian, Sphere, Vec3, Metal};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let buffer = create_image();
@@ -17,12 +17,26 @@ fn create_image() -> ImageBuffer<Rgb<u8>, Vec<u8>> {
     let mut buffer = ImageBuffer::new(width, height);
 
     let mut world = HitableVec::new();
-    world
-        .vec()
-        .push(Box::new(Sphere::new(Vec3::new(0.0, 0.0, -1.0), 0.5)));
-    world
-        .vec()
-        .push(Box::new(Sphere::new(Vec3::new(0.0, -100.5, -1.0), 100.0)));
+    world.vec().push(Box::new(Sphere::new(
+        Vec3(0.0, 0.0, -1.0),
+        0.5,
+        Box::new(Lambertian::new(Color::new(0.8, 0.3, 0.3))),
+    )));
+    world.vec().push(Box::new(Sphere::new(
+        Vec3(0.0, -100.5, -1.0),
+        100.0,
+        Box::new(Lambertian::new(Color::new(0.8, 0.8, 0.0))),
+    )));
+    world.vec().push(Box::new(Sphere::new(
+        Vec3(1.0, 0.0, -1.0),
+        0.5,
+        Box::new(Metal::new(Color::new(0.8, 0.6, 0.2))),
+    )));
+    world.vec().push(Box::new(Sphere::new(
+        Vec3(-1.0, 0.0, -1.0),
+        0.5,
+        Box::new(Metal::new(Color::new(0.8, 0.8, 0.8))),
+    )));
 
     let camera = Camera::default();
 
@@ -43,7 +57,7 @@ fn create_image() -> ImageBuffer<Rgb<u8>, Vec<u8>> {
                 let ray = camera.get_ray(u, v);
                 let _point = ray.point_at(2.0);
 
-                color += color_ray(&ray, &world);
+                color += color_ray(&ray, &world, 0);
             }
 
             color /= sample_amount as f32;

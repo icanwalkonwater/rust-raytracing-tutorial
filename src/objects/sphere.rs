@@ -1,14 +1,19 @@
 use crate::objects::hitable::{HitRecord, Hitable};
-use crate::{dot, Ray, Vec3};
+use crate::{dot, Material, Ray, Vec3};
 
 pub struct Sphere {
     center: Vec3,
     radius: f32,
+    material: Box<dyn Material>,
 }
 
 impl Sphere {
-    pub fn new(center: Vec3, radius: f32) -> Self {
-        Sphere { center, radius }
+    pub fn new(center: Vec3, radius: f32, material: Box<dyn Material>) -> Self {
+        Sphere {
+            center,
+            radius,
+            material,
+        }
     }
 }
 
@@ -36,6 +41,7 @@ impl Hitable for Sphere {
                     t: temp,
                     point,
                     normal,
+                    material: &*self.material,
                 })
             } else {
                 // Compute second root
@@ -48,6 +54,7 @@ impl Hitable for Sphere {
                         t: temp,
                         point,
                         normal,
+                        material: &*self.material,
                     })
                 } else {
                     None
