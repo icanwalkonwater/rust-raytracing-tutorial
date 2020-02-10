@@ -9,6 +9,10 @@ impl Lambertian {
     pub fn new(albedo: Color) -> Self {
         Lambertian { albedo }
     }
+
+    pub fn new_boxed(albedo: Color) -> Box<Self> {
+        Box::new(Self::new(albedo))
+    }
 }
 
 impl Material for Lambertian {

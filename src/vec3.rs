@@ -1,4 +1,4 @@
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Vec3(pub f32, pub f32, pub f32);
@@ -24,6 +24,10 @@ pub static VEC3_BACKWARD: Vec3 = Vec3(0.0, 0.0, -1.0);
 
 pub fn dot(lhs: Vec3, rhs: Vec3) -> f32 {
     lhs.dot(rhs)
+}
+
+pub fn cross(lhs: Vec3, rhs: Vec3) -> Vec3 {
+    lhs.cross(rhs)
 }
 
 impl Default for Vec3 {
@@ -65,7 +69,7 @@ impl Vec3 {
         self.0 * rhs.0 + self.1 * rhs.1 + self.2 * rhs.2
     }
 
-    pub fn cross(&self, rhs: &Self) -> Vec3 {
+    pub fn cross(&self, rhs: Self) -> Vec3 {
         Vec3(
             self.1 * rhs.2 - self.2 * rhs.1,
             -(self.0 * rhs.2 - self.2 * rhs.0),
@@ -184,6 +188,14 @@ impl DivAssign<f32> for Vec3 {
         self.0 /= rhs;
         self.1 /= rhs;
         self.2 /= rhs;
+    }
+}
+
+impl Neg for Vec3 {
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        Vec3(-self.0, -self.1, -self.2)
     }
 }
 

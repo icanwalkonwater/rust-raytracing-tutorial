@@ -1,5 +1,5 @@
 use crate::objects::hitable::{HitRecord, Hitable};
-use crate::Ray;
+use crate::{Material, Ray, Sphere, Vec3};
 
 pub struct HitableVec {
     vec: Vec<Box<dyn Hitable>>,
@@ -12,6 +12,11 @@ impl HitableVec {
 
     pub fn vec(&mut self) -> &mut Vec<Box<dyn Hitable>> {
         &mut self.vec
+    }
+
+    pub fn push_sphere(&mut self, center: Vec3, radius: f32, material: Box<dyn Material>) {
+        self.vec
+            .push(Box::new(Sphere::new(center, radius, material)));
     }
 }
 
